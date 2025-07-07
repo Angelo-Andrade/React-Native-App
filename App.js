@@ -1,21 +1,17 @@
-import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { StyleSheet, Text, View } from 'react-native';
-import RootStack from './src/navigation/index';
+import RootStack from './src/navigation';
+import CustomLayout from './src/components/CustomLayout';
+import { requisicaoGet } from './src/utils/requisicoes';
+
 
 export default function App() {
-  return (
-    <NavigationContainer>
-      <RootStack />
-    </NavigationContainer>
-  );
+    const status = requisicaoGet('http://localhost:3000/health', 'Problema ao realizar requisicão de status...'); 
+    
+    return (
+        <NavigationContainer>
+                <CustomLayout>
+                    <RootStack statusBanco={status}/>
+                </CustomLayout>
+        </NavigationContainer>
+    );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { View } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CustomButton from './CustomButton';
 
 
 export default function Rodape () {
-//    const [ pagina, setPagina ] = useState(''); 
-    
     const navigation = useNavigation();
+//    const [ pagina, setPagina ] = useState(''); 
     
     function navigateButton (pagina) {
         navigation.navigate(pagina);

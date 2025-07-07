@@ -1,6 +1,6 @@
 import { View, TextInput, Text, StyleSheet } from 'react-native';
 
-export default CustomInput = ({label, placeholder, secureTextEntry, onChangeText, value, ...props }) => {
+const CustomInput = ({label, placeholder, secureTextEntry, onChangeText, value, ...props }) => {
     return (
         <View style={styles.container}>
             { label && <Text style={styles.label}>{label}</Text> }
@@ -25,3 +25,5 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     }
 }); 
+
+export default CustomInput;
