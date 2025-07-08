@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet } from 'react-native';
 import CustomInput from '../components/CustomInput';
 import CustomButton from '../components/CustomButton';
-import { requisicaoPost } from '../utils/requisicoes';
+import { requisicaoPost } from '../utils/front';
 
 export default () => {
     const [ descricao, setDescricao ] = useState('');

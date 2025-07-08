@@ -29,6 +29,20 @@ async function listarGastos() {
     return await Gasto.find();
 }
 
+async function obterGastoTotal() {
+    const resultado = await Gasto.aggregate([
+        {
+            $group: {
+                _id: null,
+                total: { $sum: "$valor" }
+            }
+        }
+    ]);
+
+    // Retorna o total, ou 0 se não houver registros
+    return resultado[0]?.total || 0;
+}
+
 async function statusBanco() {
     return databaseConnection;
 }
@@ -37,4 +51,5 @@ module.exports = {
     criarGasto,
     listarGastos,
     statusBanco,
+    obterGastoTotal,
 };

@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import RootStack from './src/navigation';
 import CustomLayout from './src/components/CustomLayout';
-import { requisicaoGet } from './src/utils/requisicoes';
+import { requisicaoGet } from './src/utils/front';
 
 
 export default function App() {
