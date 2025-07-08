@@ -25,22 +25,17 @@ async function criarGasto({ descricao, valor, categoria }) {
     return await novoGasto.save();
 }
 
-async function listarGastos() {
+async function listarHistorico() {
     return await Gasto.find();
 }
 
-async function obterGastoTotal() {
-    const resultado = await Gasto.aggregate([
-        {
-            $group: {
-                _id: null,
-                total: { $sum: "$valor" }
-            }
-        }
-    ]);
+async function obterTotalPorCategoria(categoria) {
+  const resultado = await Gasto.aggregate([
+    { $match: { categoria } },
+    { $group: { _id: null, total: { $sum: "$valor" } } }
+  ]);
 
-    // Retorna o total, ou 0 se não houver registros
-    return resultado[0]?.total || 0;
+  return resultado[0]?.total || 0;
 }
 
 async function statusBanco() {
@@ -49,7 +44,7 @@ async function statusBanco() {
 
 module.exports = {
     criarGasto,
-    listarGastos,
+    listarHistorico,
     statusBanco,
-    obterGastoTotal,
+    obterTotalPorCategoria,
 };

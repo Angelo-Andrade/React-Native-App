@@ -3,7 +3,7 @@ const axios = require('axios');
 async function requisicaoGet (url, errorMessage) {
     try {
         const res = await axios.get(url);
-        const data = res.body;
+        const data = res.data;
         return data;
     }
     catch (err) { console.log(errorMessage, err); }
