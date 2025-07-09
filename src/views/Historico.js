@@ -4,29 +4,42 @@
 // cores dos saldo alteram conforme o valor, verde e vermelho
 // graficos simples, barra de progresso ou cardsimport React from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { requisicaoGet } from '../utils/front';
 import CardGasto from '../components/CardGasto';
+import {AlertCarregando} from '../components/AlertCarregando';
 
 export default () => {
     const [ historico, setHistorico ] = useState([]);
-    
+    const [ carregando, setCarregando ] = useState(true);
+    const [ error , setError ] = useState(null);
+
+    async function carregarDados() {
+        setCarregando(true);
+        const data = await requisicaoGet('http://localhost:3000/historico', 'Erro ao carregar historico');            
+        setCarregando(false);
+        if (!data) return setError(true); 
+        setHistorico(data);
+    }
+
     useEffect(() => {
-        async function carregarDados() {
-            const data = await requisicaoGet('http://localhost:3000/historico', 'Erro ao carregar historico');            
-            if(data) setHistorico(data);
-        }
         carregarDados();
     }, []);
 
     return (
         <View style={styles.container}>
-            <FlatList 
-                data={historico}
-                keyExtractor={(item) => item._id}
-                renderItem={({ item }) => <CardGasto item={item} />}
-                ListEmptyComponent={<Text style={styles.vazio}>Histórico vazio.</Text>}
-            />
+            { carregando && <AlertCarregando /> }
+            { !error ? (
+                <FlatList 
+                    data={historico}
+                    keyExtractor={(item) => item._id}
+                    renderItem={({ item }) => <CardGasto item={item} />}
+                    ListEmptyComponent={<Text style={styles.vazio}>Histórico vazio.</Text>}
+                    />
+                ) : (
+                    <Text style={styles.erro}>Houve um erro ao carregar o histórico</Text>
+                ) 
+            }
         </View>
   );
 }
@@ -34,7 +47,7 @@ export default () => {
 const styles = StyleSheet.create({
     container: { 
         flex: 1,
-        padding: 16,
+        padding: 20,
         marginBottom: 40,
         backgroundColor: '#fff'
     },
@@ -47,5 +60,11 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#888',
         marginTop: 20
+    },
+    erro: {
+        textAlign: 'center',
+        color: '#FF0000',
+        margin: 10,
+        fontSize: 20,
     },
 });
